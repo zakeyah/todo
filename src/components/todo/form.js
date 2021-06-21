@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Form, Button, Card } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
 function TodoForm (props) {
  const [item,setItem]=useState({})
@@ -24,25 +24,30 @@ function TodoForm (props) {
     return (
       <>
         <h3>Add Item</h3>
-        <form onSubmit={handleSubmit}>
-          <label>
+        <Form onSubmit={handleSubmit}>
+        <Form.Group >
+        <Form.Label as="legend" column sm={2}>
             <span>To Do Item</span>
             <input
               name="text"
               placeholder="Add To Do List Item"
               onChange={handleInputChange}
             />
-          </label>
-          <label>
+          </Form.Label>
+          <Form.Group controlId="formBasicRange">
+          <Form.Label as="legend" column sm={2}>
             <span>Difficulty Rating</span>
             <input defaultValue="1" type="range" min="1" max="5" name="difficulty" onChange={handleInputChange} />
-          </label>
-          <label>
+            </Form.Label>
+          </Form.Group>
+          <Form.Label as="legend" column sm={2}>
             <span>Assigned To</span>
-            <input type="text" name="assignee" placeholder="Assigned To" onChange={handleInputChange} />
-          </label>
+            <Form.Control type="text" name="assignee" placeholder="Assigned To" onChange={handleInputChange} />
+          </Form.Label>
+          <br/>
           <Button variant="outline-success" >Add Item</Button>
-        </form>
+          </Form.Group>
+        </Form>
       </>
     );
 }

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import TodoForm from './form.js';
 import TodoList from './list.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row,Col } from 'react-bootstrap';
+
+
 
 
 // import './todo.scss';
@@ -61,10 +64,15 @@ function ToDo (props) {
         </header>
 
         <section className="todo">
+        <Container>
+        <Row>
+          <col>
 
           <div>
             <TodoForm handleSubmit={addItem} />
           </div>
+          </col>
+          <col>
 
           <div>
             <TodoList
@@ -72,6 +80,9 @@ function ToDo (props) {
               handleComplete={toggleComplete}
             />
           </div>
+          </col>
+         </Row>
+          </Container>
         </section>
       </>
     );
