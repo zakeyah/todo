@@ -3,44 +3,16 @@ import TodoForm from './form.js';
 import TodoList from './list.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row,Col } from 'react-bootstrap';
-
+import useAjex from '../../hooks/useAjax'
 
 
 
 // import './todo.scss';
 
 function ToDo (props) {
+  const [list,toggleComplete,handelEdit,handelDelete,setList,addItem]=useAjex(props)
 
-  const [list, setList] = useState([])
-
- const addItem = (item) => {
-    item._id = Math.random();
-    item.complete = false;
-    setList([...list, item]);
-  };
-
- const toggleComplete = id => {
-   console.log('kkkkkkkkkkkkkkkkkk')
-
-    let item = list.filter(i => i._id === id)[0] || {};
-
-    if (item._id) {
-      item.complete = !item.complete;
-      let list2 = list.map(listItem => listItem._id === item._id ? item : listItem);
-      setList(list2);
-    }
-
-  };
-  const handelEdit=(item)=>{
-    let itemFromList = list.filter((element) => element._id === item._id)[0] || {};
-    itemFromList = item;
-      let newList = list.map(listItem => listItem._id === item._id ? item : listItem);
-      setList(newList);
-  }
-  const handelDelete=(id)=>{
-    let items = list.filter((element) => element._id !== id)
-    setList(items)
-  }
+  
  useEffect(()=> {
     let list = [
       { _id: 1, complete: false, text: 'Clean the Kitchen', difficulty: 3, assignee: 'Person A'},
