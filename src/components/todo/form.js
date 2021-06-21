@@ -15,8 +15,6 @@ function TodoForm (props) {
     item.difficulty?item.difficulty=item.difficulty:item.difficulty=1
     props.handleSubmit(item);
    
-    console.log(item,'item')
-    // console.log(newItem,'neeeeew')
     setItem({});
   };
 

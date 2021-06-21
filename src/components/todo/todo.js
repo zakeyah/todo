@@ -16,9 +16,7 @@ function ToDo (props) {
  const addItem = (item) => {
     item._id = Math.random();
     item.complete = false;
-    // item.difficulty=5
     setList([...list, item]);
-    console.log(list)
   };
 
  const toggleComplete = id => {
@@ -32,7 +30,16 @@ function ToDo (props) {
     }
 
   };
-
+  const handelEdit=(item)=>{
+    let itemFromList = list.filter((element) => element._id === item._id)[0] || {};
+    itemFromList = item;
+      let newList = list.map(listItem => listItem._id === item._id ? item : listItem);
+      setList(newList);
+  }
+  const handelDelete=(id)=>{
+    let items = list.filter((element) => element._id !== id)
+    setList(items)
+  }
  useEffect(()=> {
     let list = [
       { _id: 1, complete: false, text: 'Clean the Kitchen', difficulty: 3, assignee: 'Person A'},
@@ -47,7 +54,6 @@ function ToDo (props) {
 
   useEffect(
     () =>{
-      console.log(list.filter((item) => !item.complete).length);
         document.title = `${
           list.filter((item) => !item.complete).length
         }`
@@ -66,21 +72,23 @@ function ToDo (props) {
         <section className="todo">
         <Container>
         <Row>
-          <col>
+          {/* <col> */}
 
           <div>
             <TodoForm handleSubmit={addItem} />
           </div>
-          </col>
-          <col>
+          {/* </col>
+          <col> */}
 
           <div>
             <TodoList
               list={list}
               handleComplete={toggleComplete}
+              handelEdit={handelEdit}
+              handelDelete={handelDelete}
             />
           </div>
-          </col>
+          {/* </col> */}
          </Row>
           </Container>
         </section>

@@ -4,8 +4,7 @@ import ToDo from './components/todo/todo.js';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 
-export default class App extends React.Component {
-  render() {
+export default function App (){
     return (
       <>
       <Navbar bg="dark" variant="dark">
@@ -16,5 +15,4 @@ export default class App extends React.Component {
         <ToDo />
       </>
     );
-  }
 }
