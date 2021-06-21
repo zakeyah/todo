@@ -20,6 +20,7 @@ function ToDo (props) {
   };
 
  const toggleComplete = id => {
+   console.log('kkkkkkkkkkkkkkkkkk')
 
     let item = list.filter(i => i._id === id)[0] || {};
 
