@@ -10,12 +10,16 @@ function TodoForm (props) {
         <h3>Add Item</h3>
         <div
         className="border rounded border-success"
-  // aria-live="polite"
-  // aria-atomic="true"
- 
-  style={{ width: '300px' }}
+
 >
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}
+        style={{
+          marginLeft: '12.5%',
+          width: '40vw',
+
+         
+          padding: '0.5rem 1rem 0.5rem 2rem',
+        }}>
         <Form.Group >
         <Form.Label as="legend"  sm={2} >
             <span>To Do Item</span>
