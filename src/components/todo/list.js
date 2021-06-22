@@ -1,9 +1,10 @@
-import React from 'react';
-import {  useState } from 'react';
+import React, {useState, useContext} from 'react';
+import {TodoContext} from '../../contaxt/todoContext'
 import { ListGroup,Button,Modal,Form ,Toast,Badge  } from 'react-bootstrap';
 function TodoList (props) {
   const [show, setShow] = useState(false);
   const [item,setItem]=useState({})
+  const {disable} = useContext(TodoContext)
  
  const handleInputChange = e => {
    setItem({ ...item, [e.target.name]: e.target.value });
@@ -33,6 +34,28 @@ function TodoList (props) {
 >
       {props.list.map((item) => (
        
+      
+         <> { disable ? !item.complete && <Toast
+          onClose={() => props.handelDelete(item._id)}
+          key={item._id}
+        >
+          <Toast.Header>
+            <Badge
+              style={{ cursor: 'pointer' }}
+              className="mr-auto m-1"
+              onClick={() => props.handleComplete(item._id)}
+              size="sm"
+              variant={`${item.complete ?   'success':'danger'}`}
+            >{`${item.complete ? 'Completed' : 'notCompleted'}`}</Badge>
+            <small >{item.assignee}</small>
+          </Toast.Header>
+          <Toast.Body>
+            <p>{item.text}</p>
+            <div className="difficulty">difficulty: {item.difficulty}</div >
+          <Button variant="outline-success" onClick={()=>handleShow(item)} >edit</Button>
+          </Toast.Body>
+        </Toast>
+        :
         <Toast
           onClose={() => props.handelDelete(item._id)}
           key={item._id}
@@ -45,7 +68,6 @@ function TodoList (props) {
               size="sm"
               variant={`${item.complete ?   'success':'danger'}`}
             >{`${item.complete ? 'Completed' : 'notCompleted'}`}</Badge>
-            {/* <Button variant="outline-success" onClick={()=>props.handelDelete(item._id)}>delete</Button> */}
             <small >{item.assignee}</small>
           </Toast.Header>
           <Toast.Body>
@@ -53,7 +75,7 @@ function TodoList (props) {
             <div className="difficulty">difficulty: {item.difficulty}</div >
           <Button variant="outline-success" onClick={()=>handleShow(item)} >edit</Button>
           </Toast.Body>
-        </Toast>  
+        </Toast> } </>
       ))}
     </div>
       <Modal show={show} onHide={handleClose} animation={false}>

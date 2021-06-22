@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import useForm from '../../hooks/useForm';
 import { Form, Button } from 'react-bootstrap';
+import {TodoContext} from '../../contaxt/todoContext'
 import { useState } from 'react';
 function TodoForm (props) {
   const [item, handleInputChange, handleSubmit] = useForm(props);
+  const {setDisable,disable} = useContext(TodoContext)
+// console.log(disable);
 
     return (
       <>
@@ -45,6 +48,7 @@ function TodoForm (props) {
           </Form.Label>
           <br/>
           <Button variant="outline-success" type="submit" >Add Item</Button>
+          <Button variant="outline-success" onClick={()=>setDisable(pre=>!pre)}>{disable?'show Completed':'hide Completed'}</Button>
           </Form.Group>
         </Form>
         </div>
