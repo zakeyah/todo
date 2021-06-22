@@ -7,7 +7,7 @@ import useAjex from '../../hooks/useAjax'
 
 
 
-// import './todo.scss';
+import './todo.scss';
 
 function ToDo (props) {
   const [list,toggleComplete,handelEdit,handelDelete,getAll,addItem]=useAjex(props)
@@ -33,15 +33,15 @@ function ToDo (props) {
         </header>
 
         <section className="todo">
-        <Container>
+        <Container className="mr-3  d-inline-block">
         <Row>
           {/* <col> */}
 
           <div>
             <TodoForm handleSubmit={addItem} />
           </div>
-          {/* </col>
-          <col> */}
+          {/* </col> */}
+          {/* <col>  */}
 
           <div>
             <TodoList
@@ -51,7 +51,7 @@ function ToDo (props) {
               handelDelete={handelDelete}
             />
           </div>
-          {/* </col> */}
+           {/* </col>  */}
          </Row>
           </Container>
         </section>

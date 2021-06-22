@@ -43,20 +43,23 @@ const useAjax = () => {
 
      }
    
-    const toggleComplete = id => {
+    const toggleComplete =async (id) => {
    
        let item = list.filter(i => i._id === id)[0] || {};
+       console.log(item)
    
        if (item._id) {
-         item.record.complete = !item.complete;
-         let list2 = list.map(listItem => listItem.record._id === item.record_id ? item : listItem);
+         item.complete = !item.complete;
+         let url = `${todoAPI}/${id}`;
+         const results = await axios.put(url, item);
+
+         let list2 = list.map(listItem => listItem._id === item._id ? item : listItem);
 
          setList(list2);
        }
    
      };
      const handelEdit=async (item)=>{
-      console.log(typeof  item._id)
       let url = `${todoAPI}/${item._id}`;
       const results = await axios.put(url, item);
       let itemFromList = list.filter((element) => element._id === item._id)[0] || {};
