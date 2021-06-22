@@ -29,7 +29,7 @@ function TodoList (props) {
       <ListGroup>
         {props.list.map(item => (
           <ListGroup.Item action variant="success"
-            className={`complete-${item.complete.toString()}`}
+            className={`complete-${item.complete}`}
             key={item._id}
           >
             <span onClick={() => props.handleComplete(item._id)}>
