@@ -1,6 +1,6 @@
 import React from 'react';
 import {  useState } from 'react';
-import { ListGroup,Button,Modal,Form } from 'react-bootstrap';
+import { ListGroup,Button,Modal,Form ,Toast,Badge  } from 'react-bootstrap';
 function TodoList (props) {
   const [show, setShow] = useState(false);
   const [item,setItem]=useState({})
@@ -26,20 +26,36 @@ function TodoList (props) {
  
     return (
       <>
-      <ListGroup>
-        {props.list.map(item => (
-          <ListGroup.Item action variant="success"
-            className={`complete-${item.complete.toString()}`}
-            key={item._id}
-          >
-            <span onClick={() => props.handleComplete(item._id)}>
-              {item.text}
-            </span>
-            <Button variant="outline-success" onClick={()=>handleShow(item)} >edit</Button>
-            <Button variant="outline-success" onClick={()=>props.handelDelete(item._id)}>delete</Button>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+       <div
+  aria-live="polite"
+  aria-atomic="true"
+  style={{ width: '310px' }}
+>
+      {props.list.map((item) => (
+       
+        <Toast
+          onClose={() => props.handelDelete(item._id)}
+          key={item._id}
+        >
+          <Toast.Header>
+            <Badge
+              style={{ cursor: 'pointer' }}
+              className="mr-auto m-1"
+              onClick={() => props.handleComplete(item._id)}
+              size="sm"
+              variant={`${item.complete ?   'success':'danger'}`}
+            >{`${item.complete ? 'Completed' : 'notCompleted'}`}</Badge>
+            {/* <Button variant="outline-success" onClick={()=>props.handelDelete(item._id)}>delete</Button> */}
+            <small >{item.assignee}</small>
+          </Toast.Header>
+          <Toast.Body>
+            <p>{item.text}</p>
+            <div className="difficulty">difficulty: {item.difficulty}</div >
+          <Button variant="outline-success" onClick={()=>handleShow(item)} >edit</Button>
+          </Toast.Body>
+        </Toast>  
+      ))}
+    </div>
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
         </Modal.Header>
