@@ -1,57 +1,52 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import axios from 'axios';
+import {TodoContext} from '../contaxt/todoContext'
 
-// const todoAPI = 'https://api-js401.herokuapp.com/api/v1/todo';
-const todoAPI ='https://zakeyah-api.herokuapp.com/todo'
+
+const todoAPI = 'https://api-js401.herokuapp.com/api/v1/todo';
+// const todoAPI ='https://zakeyah-api.herokuapp.com/todo'
 
 const useAjax = () => {
+  const {list,setList} = useContext(TodoContext)
 
-    const [list, setList] = useState([])
-
-    const addItem =async (item) => {
-        try{
-          
-          item._id = Math.random();
-          item.complete = false;
+const addItem=async (item)=>{
           item.due = new Date();
-          // const obj ={
-          //   method: 'post',
-          //   mode: 'cors',
-          //   cache: 'no-cache',
-          //   headers: { 'Content-Type': 'application/json' },
-          //   body: JSON.stringify(item)
-          // }
+  const toDo= await axios({
+    method: 'post',
+    url: todoAPI,
+    mode: 'cors',
+    cache: 'no-cache',
+    headers: { 'Content-Type': 'application/json' },
+    data: item,
+    })
+    console.log(toDo.data)
+   
+    setList( [...list, item]);
+    }
+     
+ 
+     const getAll = ()=>{
+      async  function x(){
 
-        //  const results= await axios({
-        //     method: 'post',
-        //     url: todoAPI,
-        //     headers: { 'Content-Type': 'application/json' },
-        //     data: JSON.stringify(item)
-        //   })
+            const results = await axios.get(todoAPI);
+            setList([...results.data.results]);
+          }
 
-            
-            const results = await axios.post(todoAPI, item);
-            // console.log(results.data,';;;;;;;;;;;;;;;;;;;;;;;;;;')
-            setList([...list, results.data]);
-        }catch(e){
-            console.log(e)}
-     };
-     const getAll =  async()=>{
-       const results = await axios.get(todoAPI);
-       console.log(results.data)
-       setList([...results.data]);
+          x()
+      
+
 
      }
    
     const toggleComplete =async (id) => {
    
        let item = list.filter(i => i._id === id)[0] || {};
-       console.log(item)
+      //  console.log(item)
    
        if (item._id) {
          item.complete = !item.complete;
          let url = `${todoAPI}/${id}`;
-         const results = await axios.put(url, item);
+          await axios.put(url, item);
 
          let list2 = list.map(listItem => listItem._id === item._id ? item : listItem);
 
@@ -61,24 +56,19 @@ const useAjax = () => {
      };
      const handelEdit=async (item)=>{
       let url = `${todoAPI}/${item._id}`;
-      const results = await axios.put(url, item);
-      let itemFromList = list.filter((element) => element._id === item._id)[0] || {};
-      itemFromList = item;
+       await axios.put(url, item);
       let newList = list.map(listItem => listItem._id === item._id ? item : listItem);
       setList(newList);
     }
     const handelDelete=async (id)=>{
-      console.log(typeof  id)
+      // console.log(typeof  id)
       let url = `${todoAPI}/${id}`;
-      const results = await axios.delete(url);
-      console.log(results)
-          console.log(results,'sssssssssssssssssss')
-          const results2 = await axios.get(todoAPI);
+       await axios.delete(url);
        let items = list.filter((element) => element._id !== id)
        setList(items)
      }
 
-return [list,toggleComplete,handelEdit,handelDelete,getAll,addItem]
+return [list,toggleComplete,handelEdit,handelDelete,getAll,addItem,setList]
 }
 
 export default useAjax;

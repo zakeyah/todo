@@ -1,21 +1,28 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import useForm from '../../hooks/useForm';
 import { Form, Button } from 'react-bootstrap';
-import { useState } from 'react';
+import {TodoContext} from '../../contaxt/todoContext'
+// import { useState } from 'react';
 function TodoForm (props) {
   const [item, handleInputChange, handleSubmit] = useForm(props);
+  const {setDisable,disable,sort, setSort,list,setList} = useContext(TodoContext)
 
+// console.log(props.list,list)
     return (
       <>
         <h3>Add Item</h3>
         <div
         className="border rounded border-success"
-  // aria-live="polite"
-  // aria-atomic="true"
- 
-  style={{ width: '300px' }}
+
 >
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}
+        style={{
+          marginLeft: '12.5%',
+          width: '40vw',
+
+         
+          padding: '0.5rem 1rem 0.5rem 2rem',
+        }}>
         <Form.Group >
         <Form.Label as="legend"  sm={2} >
             <span>To Do Item</span>
@@ -41,6 +48,14 @@ function TodoForm (props) {
           </Form.Label>
           <br/>
           <Button variant="outline-success" type="submit" >Add Item</Button>
+          <Button variant="outline-success" onClick={()=>setDisable(pre=>!pre)}>{disable?'show Completed':'hide Completed'}</Button>
+          <Button variant="outline-success" onClick={()=>{
+            setSort(pre=>!pre)
+
+           let  list2 =[...list].sort((b,a)=>a.difficulty-b.difficulty )
+           
+            setList(list2)
+            }}>sort</Button>
           </Form.Group>
         </Form>
         </div>

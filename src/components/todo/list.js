@@ -1,10 +1,32 @@
-import React from 'react';
-import {  useState } from 'react';
-import { ListGroup,Button,Modal,Form ,Toast,Badge  } from 'react-bootstrap';
+import React, {useState, useContext} from 'react';
+import {TodoContext} from '../../contaxt/todoContext'
+import { Button,Modal,Form ,Toast,Badge  } from 'react-bootstrap';
+import useAjex from '../../hooks/useAjax'
 function TodoList (props) {
+  const [,toggleComplete,handelEdit,handelDelete]=useAjex(props)
   const [show, setShow] = useState(false);
   const [item,setItem]=useState({})
- 
+  const {disable,list,todoPerPage,currentPage,setCurrentPage} = useContext(TodoContext)
+
+
+  let indexOfLastItem = currentPage * todoPerPage;
+  let indexOfFirstItem = indexOfLastItem - todoPerPage;
+  let currentItem = list.slice(indexOfFirstItem, indexOfLastItem)
+
+  const pageNumbers = [];
+
+  const changePage =(numberP)=>{
+  setCurrentPage(numberP)
+  indexOfLastItem = currentPage * todoPerPage;
+  indexOfFirstItem = indexOfLastItem - todoPerPage;
+  currentItem = list.slice(indexOfFirstItem, indexOfLastItem)
+}
+
+for (let i = 1; i <= Math.ceil(list.length / todoPerPage); i++) {
+  pageNumbers.push(i);
+}
+
+
  const handleInputChange = e => {
    setItem({ ...item, [e.target.name]: e.target.value });
   };
@@ -18,11 +40,12 @@ function TodoList (props) {
     const handelSubmit=(e)=>{
       e.preventDefault()
       handleClose();
-      props.handelEdit(item)
+      handelEdit(item)
     }
 
 
 
+    
  
     return (
       <>
@@ -30,22 +53,23 @@ function TodoList (props) {
   aria-live="polite"
   aria-atomic="true"
   style={{ width: '310px' }}
+  // { sort ? props.list && }
 >
-      {props.list.map((item) => (
-       
-        <Toast
-          onClose={() => props.handelDelete(item._id)}
+      {currentItem.map((item) => (
+        
+        
+        <> { disable ? !item.complete && <Toast
+          onClose={() => handelDelete(item._id)}
           key={item._id}
         >
           <Toast.Header>
             <Badge
               style={{ cursor: 'pointer' }}
               className="mr-auto m-1"
-              onClick={() => props.handleComplete(item._id)}
+              onClick={() => toggleComplete(item._id)}
               size="sm"
               variant={`${item.complete ?   'success':'danger'}`}
             >{`${item.complete ? 'Completed' : 'notCompleted'}`}</Badge>
-            {/* <Button variant="outline-success" onClick={()=>props.handelDelete(item._id)}>delete</Button> */}
             <small >{item.assignee}</small>
           </Toast.Header>
           <Toast.Body>
@@ -53,9 +77,44 @@ function TodoList (props) {
             <div className="difficulty">difficulty: {item.difficulty}</div >
           <Button variant="outline-success" onClick={()=>handleShow(item)} >edit</Button>
           </Toast.Body>
-        </Toast>  
+        </Toast>
+        :
+        <Toast
+          onClose={() => handelDelete(item._id)}
+          key={item._id}
+        >
+          <Toast.Header>
+            <Badge
+              style={{ cursor: 'pointer' }}
+              className="mr-auto m-1"
+              onClick={() => toggleComplete(item._id)}
+              size="sm"
+              variant={`${item.complete ?   'success':'danger'}`}
+            >{`${item.complete ? 'Completed' : 'notCompleted'}`}</Badge>
+            <small >{item.assignee}</small>
+          </Toast.Header>
+          <Toast.Body>
+            <p>{item.text}</p>
+            <div className="difficulty">difficulty: {item.difficulty}</div >
+          <Button variant="outline-success" onClick={()=>handleShow(item)} >edit</Button>
+          </Toast.Body>
+        </Toast> } </>
       ))}
     </div>
+
+
+    <nav>
+      <ul className='pagination'>
+        {pageNumbers.map(number => (
+          <li key={number} className='page-item'>
+            <a onClick={() => changePage(number)} href='!#' className='page-link'>
+              
+              {number}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
         </Modal.Header>

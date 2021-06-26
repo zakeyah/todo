@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext} from 'react';
 import TodoForm from './form.js';
 import TodoList from './list.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row,Col } from 'react-bootstrap';
 import useAjex from '../../hooks/useAjax'
+import { TodoContext } from '../../contaxt/todoContext.js';
 
 
 
-import './todo.scss';
+
+// import './todo.scss';
 
 function ToDo (props) {
-  const [list,toggleComplete,handelEdit,handelDelete,getAll,addItem]=useAjex(props)
+  const [,,,,getAll]=useAjex(props)
+  const {list}= useContext(TodoContext)
 
   
  useEffect(getAll, []);
@@ -38,20 +41,19 @@ function ToDo (props) {
           {/* <col> */}
 
           <div>
-            <TodoForm handleSubmit={addItem} />
+            <TodoForm  />
           </div>
           {/* </col> */}
           {/* <col>  */}
 
           <div>
-            <TodoList
-              list={list}
-              handleComplete={toggleComplete}
-              handelEdit={handelEdit}
-              handelDelete={handelDelete}
-            />
+            <TodoList/>
           </div>
            {/* </col>  */}
+           <>
+
+           
+           </>
          </Row>
           </Container>
         </section>

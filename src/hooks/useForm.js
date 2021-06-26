@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import useAjax from   './useAjax';
 
 const useForm = (props) => {
-    const [item,setItem]=useState({})
+  const[,,,,,addItem]= useAjax()
+    const [item,setItem]=useState({difficulty:"1"})
  
  const handleInputChange = e => {
   setItem({ ...item, [e.target.name]: e.target.value });
@@ -10,10 +12,8 @@ const useForm = (props) => {
  const handleSubmit = (e) => {
     e.preventDefault();
     e.target.reset();
-    item.difficulty?item.difficulty=item.difficulty:item.difficulty=1
-    props.handleSubmit(item);
-   
-    setItem({});
+    addItem(item);
+    setItem({difficulty:"1"});
   };
 	return [item, handleInputChange, handleSubmit];
 };
