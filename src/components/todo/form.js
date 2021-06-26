@@ -2,12 +2,12 @@ import React, {useContext} from 'react';
 import useForm from '../../hooks/useForm';
 import { Form, Button } from 'react-bootstrap';
 import {TodoContext} from '../../contaxt/todoContext'
-import { useState } from 'react';
+// import { useState } from 'react';
 function TodoForm (props) {
   const [item, handleInputChange, handleSubmit] = useForm(props);
-  const {setDisable,disable} = useContext(TodoContext)
-// console.log(disable);
+  const {setDisable,disable,sort, setSort,list,setList} = useContext(TodoContext)
 
+// console.log(props.list,list)
     return (
       <>
         <h3>Add Item</h3>
@@ -49,6 +49,13 @@ function TodoForm (props) {
           <br/>
           <Button variant="outline-success" type="submit" >Add Item</Button>
           <Button variant="outline-success" onClick={()=>setDisable(pre=>!pre)}>{disable?'show Completed':'hide Completed'}</Button>
+          <Button variant="outline-success" onClick={()=>{
+            setSort(pre=>!pre)
+
+           let  list2 =[...list].sort((b,a)=>a.difficulty-b.difficulty )
+           
+            setList(list2)
+            }}>sort</Button>
           </Form.Group>
         </Form>
         </div>
